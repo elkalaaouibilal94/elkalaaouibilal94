@@ -1,6 +1,6 @@
 // Datei: index.js
 const express = require("express");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer"); // ⬅️ Umgestellt auf full puppeteer mit Chromium-Binary
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -22,17 +22,15 @@ app.get("/get-category", async (req, res) => {
     return res.status(400).json({ error: "Ungültiger oder fehlender EAN" });
   }
 
-  const searchUrl = `https://www.orderchamp.com/search?search=${encodeURIComponent(
-    ean
-  )}`;
+  const searchUrl = `https://www.orderchamp.com/search?search=${encodeURIComponent(ean)}`;
   console.log(`🔍 Suche nach EAN auf: ${searchUrl}`);
 
   let browser;
 
   try {
-    console.log("🚀 Starte lokalen Puppeteer...");
+    console.log("🚀 Starte Puppeteer mit eingebautem Chromium...");
     browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
@@ -49,9 +47,7 @@ app.get("/get-category", async (req, res) => {
 
     if (!relativeUrl) {
       await browser.close();
-      return res
-        .status(404)
-        .json({ error: "Kein Produktlink im HTML gefunden." });
+      return res.status(404).json({ error: "Kein Produktlink im HTML gefunden." });
     }
 
     const productUrl = `https://www.orderchamp.com${relativeUrl}`;
