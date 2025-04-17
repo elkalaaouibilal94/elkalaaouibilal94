@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@sparticuz/chromium": "^133.0.0",
     "express": "^5.1.0",
-    "puppeteer": "^24.6.1",
-    "puppeteer-core": "^10.4.0"
+    "puppeteer": "^24.6.1"
   }
 }
