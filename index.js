@@ -1,7 +1,6 @@
 // Datei: index.js
 const express = require("express");
-const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium");
+const puppeteer = require("puppeteer");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -31,14 +30,10 @@ app.get("/get-category", async (req, res) => {
   let browser;
 
   try {
-    console.log(
-      "🚀 Starte Chromium mit puppeteer-core + @sparticuz/chromium..."
-    );
+    console.log("🚀 Starte lokalen Puppeteer...");
     browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      defaultViewport: chromium.defaultViewport,
+      headless: "new",
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const page = await browser.newPage();
@@ -46,7 +41,7 @@ app.get("/get-category", async (req, res) => {
 
     const bodyHTML = await page.evaluate(() => document.body.innerHTML);
     const productLink = bodyHTML.match(
-      /href=\"(\/de\/store\/[^"]+\/listings\/[^"]+)\"/i
+      /href=\"(\/de\/store\/[^\"]+\/listings\/[^\"]+)\"/i
     );
     const relativeUrl = productLink ? productLink[1] : null;
 
